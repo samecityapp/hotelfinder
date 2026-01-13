@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Hotel {
+  id              String   @id @default(uuid())
+  name            String
+  locationQuery   String   // The search term used to find this
+  address         String?
+  rating          Float?
+  reviews         Int?
+  
+  website         String?
+  instagram       String?
+  
+  // Status: DISCOVERED, VERIFIED, REJECTED, UNCERTAIN
+  status          String   @default("DISCOVERED") 
+  
+  // JSON or text log of why it was verified/rejected
+  verificationLog String?  
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  lastChecked     DateTime @default(now())
+
+  // Ensure we don't duplicate the same hotel for the same search
+  @@unique([name, locationQuery])
+}
