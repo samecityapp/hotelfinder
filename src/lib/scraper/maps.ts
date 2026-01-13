@@ -59,7 +59,7 @@ export async function scrapeGoogleMaps(location: string): Promise<MapsResult[]> 
                 const parent = link.closest('div[role="article"]') || link.parentElement?.parentElement;
                 if (!parent) continue;
 
-                const updateText = parent.innerText;
+                const updateText = (parent as HTMLElement).innerText || parent.textContent;
                 if (!updateText) continue;
 
                 // Heuristic extraction
